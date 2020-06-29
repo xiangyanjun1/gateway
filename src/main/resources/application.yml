@@ -1,0 +1,31 @@
+server:
+  port: 8884
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: api-gateway
+  cloud:
+      gateway:
+        locator:
+          enabled: true
+        routes:
+        - id: locallife
+          uri: lb://xiangyanjun-locallife
+          predicates:
+          - Path=/locallife/**
+          filters:
+          - StripPrefix=1
+        - id: common
+          uri: lb://xiangyanjun-common
+          predicates:
+          - Path=/common/**
+          filters:
+          - StripPrefix=1
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8881/eureka/
